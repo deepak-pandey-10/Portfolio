@@ -1,140 +1,128 @@
-import { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import BackgroundCanvas from './components/BackgroundCanvas';
-import CustomCursor from './components/CustomCursor';
-import Hero from './components/Hero';
-import About from './components/About';
-import Projects from './components/Projects';
-import Timeline from './components/Timeline';
-import Contact from './components/Contact';
-import { ArrowUp } from 'lucide-react';
+import { Suspense, useRef, useEffect } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { ScrollControls, Scroll, useScroll, Environment, Sky } from '@react-three/drei';
+import Lenis from 'lenis';
 
-function App() {
-  const [showScrollTop, setShowScrollTop] = useState(false);
+// Import Components
+import FootballField from './components/FootballField';
+import Player from './components/Player';
+import Football from './components/Football';
+import StadiumLights from './components/StadiumLights';
+import GoalPost from './components/GoalPost';
+import Confetti from './components/Confetti';
 
+import IntroOverlay from './components/IntroOverlay';
+import AboutBillboard from './components/AboutBillboard';
+import ProjectCards from './components/ProjectCards';
+import GoalCelebration from './components/GoalCelebration';
+
+// Camera Rig to follow the player
+function CameraRig() {
+  const scroll = useScroll();
+  const runDistance = 120; // Match player's run distance
+
+  useFrame((state) => {
+    // Determine player's target Z based on scroll
+    let playerZ = 0;
+    if (scroll.offset > 0.1 && scroll.offset < 0.9) {
+      const progress = (scroll.offset - 0.1) / 0.8;
+      playerZ = progress * runDistance;
+    } else if (scroll.offset >= 0.9) {
+      playerZ = runDistance;
+    }
+
+    // Camera follows player but stays slightly behind and above
+    // Add some dynamic lookAt based on scroll phase
+    const targetCamX = 0;
+    const targetCamY = 3;
+    const targetCamZ = playerZ - 6; // Behind the player
+
+    // Smoothly interpolate camera position
+    state.camera.position.x = state.camera.position.x + (targetCamX - state.camera.position.x) * 0.05;
+    state.camera.position.y = state.camera.position.y + (targetCamY - state.camera.position.y) * 0.05;
+    state.camera.position.z = state.camera.position.z + (targetCamZ - state.camera.position.z) * 0.05;
+
+    // Look at player (or goal at the very end)
+    let lookTargetZ = playerZ;
+    if (scroll.offset > 0.8) {
+      // Look towards the goal
+      lookTargetZ = 135; 
+    }
+    
+    state.camera.lookAt(0, 1, lookTargetZ);
+  });
+
+  return null;
+}
+
+export default function App() {
+  // Setup Lenis for smooth scrolling
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   return (
     <>
-      {/* Visual background systems */}
-      <BackgroundCanvas />
-      <div className="bg-grid" />
-      <CustomCursor />
+      <Canvas shadows camera={{ position: [0, 3, -6], fov: 60 }}>
+        <color attach="background" args={['#0a110a']} />
+        
+        {/* Environment setup */}
+        <fog attach="fog" args={['#0a110a', 10, 80]} />
+        <Sky sunPosition={[0, 1, 0]} turbidity={0.1} rayleigh={0.5} inclination={0.6} distance={1000} />
+        
+        <Suspense fallback={null}>
+          <ScrollControls pages={6} damping={0.1} distance={1.2}>
+            
+            {/* Camera Controller */}
+            <CameraRig />
 
-      {/* Navigation */}
-      <Navbar />
+            {/* Lights */}
+            <StadiumLights />
 
-      {/* Main content layouts */}
-      <main style={{ width: '100%' }}>
-        <Hero />
-        <About />
-        <Projects />
-        <Timeline />
-        <Contact />
-      </main>
+            {/* 3D Scene */}
+            <FootballField />
+            <Player position={[0, 0, 0]} />
+            <Football />
+            <GoalPost position={[0, 0, 135]} />
+            <Confetti position={[0, 5, 135]} count={300} />
 
-      {/* Sticky footer */}
-      <footer style={{
-        padding: '40px 24px',
-        textAlign: 'center',
-        borderTop: '1px solid var(--border-color)',
-        zIndex: 5,
-        position: 'relative',
-        background: 'rgba(7, 9, 14, 0.9)',
-        marginTop: '80px'
-      }}>
-        <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '20px'
-        }} className="footer-container">
-          <span style={{
-            fontFamily: 'var(--font-title)',
-            fontWeight: '800',
-            fontSize: '1.2rem',
-            letterSpacing: '-1px'
-          }}>
-            DEEPAK<span style={{ color: 'var(--accent)' }}>.</span>
-          </span>
-          
-          <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-            Designed & Engineered by Deepak Pandey © 2026
-          </span>
-          
-          <div style={{ display: 'flex', gap: '16px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-            <a href="#about" className="clickable" style={{ hover: 'color: var(--accent)' }}>Bio</a>
-            <a href="#projects" className="clickable">Portfolio</a>
-            <a href="#contact" className="clickable">Hire</a>
-          </div>
-        </div>
-      </footer>
+            {/* Billboards and 3D UI */}
+            <AboutBillboard position={[-8, 0, 20]} />
+            <ProjectCards />
 
-      {/* Floating Scroll to Top button */}
-      {showScrollTop && (
-        <button
-          onClick={scrollToTop}
-          className="clickable"
-          aria-label="Scroll to top"
-          style={{
-            position: 'fixed',
-            bottom: '30px',
-            right: '30px',
-            width: '45px',
-            height: '45px',
-            borderRadius: '50%',
-            background: 'var(--accent)',
-            color: '#000',
-            border: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            boxShadow: '0 0 15px rgba(var(--accent-rgb), 0.5)',
-            zIndex: 1000,
-            transition: 'var(--transition-fast)'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px)';
-            e.currentTarget.style.boxShadow = '0 0 25px rgba(var(--accent-rgb), 0.8)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 0 15px rgba(var(--accent-rgb), 0.5)';
-          }}
-        >
-          <ArrowUp size={20} />
-        </button>
-      )}
+            {/* HTML Overlays tied to scroll */}
+            <Scroll html style={{ width: '100%', height: '100%' }}>
+              <IntroOverlay />
+              <GoalCelebration />
+            </Scroll>
 
-      <style>{`
-        @media (max-width: 600px) {
-          .footer-container {
-            flex-direction: column !important;
-            text-align: center;
-          }
-        }
-      `}</style>
+          </ScrollControls>
+        </Suspense>
+      </Canvas>
+      
+      {/* Loading Screen Overlay (Optional but good for 3D) */}
+      {/* <Loader /> */}
     </>
   );
 }
-
-export default App;

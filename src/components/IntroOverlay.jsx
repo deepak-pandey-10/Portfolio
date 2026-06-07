@@ -7,8 +7,8 @@ export default function IntroOverlay() {
   const [opacity, setOpacity] = useState(1);
 
   useFrame(() => {
-    // Fade out as scroll begins (0 to 0.1)
-    const newOpacity = 1 - Math.min(scroll.offset / 0.1, 1);
+    // Fade out quickly as scroll begins
+    const newOpacity = 1 - Math.min(scroll.offset / 0.05, 1);
     if (Math.abs(newOpacity - opacity) > 0.05) {
       setOpacity(newOpacity);
     }
@@ -19,25 +19,26 @@ export default function IntroOverlay() {
   return (
     <div 
       className="fullscreen-overlay html-overlay" 
-      style={{ 
-        opacity, 
-        transition: 'opacity 0.1s',
-        background: `linear-gradient(to bottom, rgba(10, 17, 10, 0.8), transparent)`
-      }}
+      style={{ opacity, transition: 'opacity 0.1s' }}
     >
-      <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center', maxWidth: '600px' }}>
-        <h1 style={{ fontSize: '4rem', color: 'var(--accent)', marginBottom: '0.5rem', textShadow: '0 0 20px rgba(255,215,0,0.5)' }}>
+      <div className="pointer-events-none max-w-[800px] px-6 text-center">
+        <div className="mb-4 font-mono text-[0.8rem] tracking-[5px] text-space-accent">
+          SYSTEM ONLINE // V_1.0.0
+        </div>
+        
+        <h1 className="mb-2 text-5xl text-space-primary drop-shadow-[0_0_30px_rgb(0_242_254_/_60%)] sm:text-[5rem]">
           DEEPAK PANDEY
         </h1>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 500, letterSpacing: '0.1em', marginBottom: '2rem' }}>
-          CREATIVE DEVELOPER • FOOTBALL ENTHUSIAST
+        
+        <h2 className="mb-16 text-[1.2rem] font-normal tracking-[0.2em] text-space-secondary">
+          CREATIVE DEVELOPER • DIGITAL EXPLORER
         </h2>
         
-        <div style={{ marginTop: '3rem' }} className="animate-bounce">
-          <p style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '2px', opacity: 0.8 }}>
-            Scroll to kick off
+        <div className="mt-20 animate-pulse-glow">
+          <p className="font-mono text-[0.9rem] uppercase tracking-[3px] text-space-accent">
+            [ INITIATE THRUSTERS - SCROLL DOWN ]
           </p>
-          <div style={{ width: '2px', height: '40px', background: 'var(--accent)', margin: '1rem auto' }} />
+          <div className="mx-auto my-8 h-[60px] w-px bg-gradient-to-b from-space-accent to-transparent" />
         </div>
       </div>
     </div>

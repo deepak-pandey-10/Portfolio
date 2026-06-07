@@ -1,44 +1,59 @@
-import { Html } from '@react-three/drei';
+import { useScroll } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { useState } from 'react';
 
-export default function AboutBillboard({ position }) {
+export default function AboutBillboard() {
+  const scroll = useScroll();
+  const [opacity, setOpacity] = useState(0);
+  const [scrollOffset, setScrollOffset] = useState(0);
+
+  useFrame(() => {
+    const isVisible = scroll.offset > 0.04 && scroll.offset < 0.28;
+    const nextOpacity = isVisible ? 1 : 0;
+
+    if (nextOpacity !== opacity) {
+      setOpacity(nextOpacity);
+    }
+
+    if (Math.abs(scroll.offset - scrollOffset) > 0.005) {
+      setScrollOffset(scroll.offset);
+    }
+  });
+
+  if (!opacity) {
+    return null;
+  }
+
   return (
-    <group position={position}>
-      {/* 3D Frame/Mount for the billboard */}
-      <mesh position={[0, -2, -0.5]}>
-        <boxGeometry args={[1, 4, 1]} />
-        <meshStandardMaterial color="#333" />
-      </mesh>
-      
-      {/* HTML Content */}
-      <Html 
-        transform 
-        occlude 
-        position={[0, 0, 0]}
-        rotation={[0, -Math.PI / 6, 0]} // Angled slightly towards the player
-        distanceFactor={15} // Scales the HTML based on distance
-      >
-        <div className="glass-panel" style={{ 
-          width: '500px', 
-          padding: '2rem',
-          color: 'white',
-          border: '2px solid var(--accent)'
-        }}>
-          <h2 style={{ fontSize: '2.5rem', color: 'var(--accent)', marginBottom: '1rem' }}>
-            ABOUT ME
-          </h2>
-          <p style={{ fontSize: '1.2rem', lineHeight: 1.6, marginBottom: '1.5rem', opacity: 0.9 }}>
-            I'm a passionate creative developer who loves turning complex problems into elegant, interactive web experiences. 
-            Just like on the pitch, I value teamwork, strategy, and continuous improvement.
-          </p>
-          
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>SKILLS</h3>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {['React', 'Three.js', 'JavaScript', 'CSS/SCSS', 'Node.js', 'UI/UX Design'].map(skill => (
-              <span key={skill} className="glass-pill">{skill}</span>
-            ))}
-          </div>
+    <div
+      className="fullscreen-overlay html-overlay px-4"
+      style={{ transform: `translate3d(0, ${scrollOffset * 600}vh, 0)` }}
+    >
+      <div className="glass-panel w-[min(86vw,520px)] p-6 text-white sm:p-10">
+        <div className="absolute left-0 top-0 bg-space-accent px-2.5 py-1 text-[0.7rem] font-bold tracking-[2px] text-black">
+          DATABANK // ABOUT
         </div>
-      </Html>
-    </group>
+
+        <h2 className="mb-5 mt-5 text-3xl text-space-accent drop-shadow-[0_0_10px_rgb(0_242_254_/_50%)] sm:mb-6 sm:mt-4 sm:text-[2.5rem]">
+          THE JOURNEY
+        </h2>
+
+        <p className="mb-6 text-base leading-[1.65] text-space-secondary sm:mb-8 sm:text-[1.1rem]">
+          I am a creative developer navigating the digital universe. My mission is to engineer immersive,
+          high-performance web experiences that push the boundaries of what's possible in the browser.
+          From intricate 3D worlds to sleek, functional dashboards, I build the future.
+        </p>
+
+        <h3 className="mb-4 text-base tracking-[2px] text-space-accent sm:text-[1.2rem]">
+          CORE SYSTEMS
+        </h3>
+
+        <div className="flex flex-wrap gap-2">
+          {['React', 'Three.js / WebGL', 'TypeScript', 'Node.js', 'Next.js', 'Tailwind'].map(skill => (
+            <span key={skill} className="glass-pill">{skill}</span>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

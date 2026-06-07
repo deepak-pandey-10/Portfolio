@@ -1,128 +1,92 @@
-import { Suspense, useRef, useEffect } from 'react';
+import { Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { ScrollControls, Scroll, useScroll, Environment, Sky } from '@react-three/drei';
-import Lenis from 'lenis';
+import { ScrollControls, Scroll, useScroll } from '@react-three/drei';
+import * as THREE from 'three';
 
-// Import Components
-import FootballField from './components/FootballField';
-import Player from './components/Player';
-import Football from './components/Football';
-import StadiumLights from './components/StadiumLights';
-import GoalPost from './components/GoalPost';
-import Confetti from './components/Confetti';
+// Import Space Components
+import Starfield from './components/Starfield';
+import Planet from './components/Planet';
+import AsteroidField from './components/AsteroidField';
+import Wormhole from './components/Wormhole';
 
+// Import Overlays
 import IntroOverlay from './components/IntroOverlay';
 import AboutBillboard from './components/AboutBillboard';
 import ProjectCards from './components/ProjectCards';
-import GoalCelebration from './components/GoalCelebration';
+import ContactPortal from './components/ContactPortal';
 
-// Camera Rig to follow the player
+// Spaceship Camera Rig
 function CameraRig() {
   const scroll = useScroll();
-  const runDistance = 120; // Match player's run distance
+  const journeyDistance = -200; // Fly forward into -Z space
 
   useFrame((state) => {
-    // Determine player's target Z based on scroll
-    let playerZ = 0;
-    if (scroll.offset > 0.1 && scroll.offset < 0.9) {
-      const progress = (scroll.offset - 0.1) / 0.8;
-      playerZ = progress * runDistance;
-    } else if (scroll.offset >= 0.9) {
-      playerZ = runDistance;
-    }
-
-    // Camera follows player but stays slightly behind and above
-    // Add some dynamic lookAt based on scroll phase
-    const targetCamX = 0;
-    const targetCamY = 3;
-    const targetCamZ = playerZ - 6; // Behind the player
+    // 0 to 1 scroll maps to 0 to journeyDistance
+    const targetZ = scroll.offset * journeyDistance;
+    
+    // Slight banking/swaying effect
+    const time = state.clock.getElapsedTime();
+    const swayX = Math.sin(time * 0.5) * 2;
+    const swayY = Math.cos(time * 0.3) * 1;
+    
+    // Add intentional banking on X axis based on scroll position
+    let bankX = 0;
+    if (scroll.offset > 0.2 && scroll.offset < 0.5) bankX = 5; // Look at planet
+    if (scroll.offset > 0.5 && scroll.offset < 0.8) bankX = -2; // Navigate asteroids
 
     // Smoothly interpolate camera position
-    state.camera.position.x = state.camera.position.x + (targetCamX - state.camera.position.x) * 0.05;
-    state.camera.position.y = state.camera.position.y + (targetCamY - state.camera.position.y) * 0.05;
-    state.camera.position.z = state.camera.position.z + (targetCamZ - state.camera.position.z) * 0.05;
+    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, swayX + bankX, 0.05);
+    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, swayY, 0.05);
+    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetZ + 10, 0.05); // +10 to be slightly ahead of the actual Z mark
 
-    // Look at player (or goal at the very end)
-    let lookTargetZ = playerZ;
-    if (scroll.offset > 0.8) {
-      // Look towards the goal
-      lookTargetZ = 135; 
-    }
-    
-    state.camera.lookAt(0, 1, lookTargetZ);
+    // Always look forward down the Z axis, but slightly offset
+    state.camera.lookAt(swayX * 0.5, swayY * 0.5, targetZ - 100);
   });
 
   return null;
 }
 
 export default function App() {
-  // Setup Lenis for smooth scrolling
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
   return (
     <>
-      <Canvas shadows camera={{ position: [0, 3, -6], fov: 60 }}>
-        <color attach="background" args={['#0a110a']} />
+      <Canvas camera={{ position: [0, 0, 10], fov: 60 }}>
+        <color attach="background" args={['#050510']} />
         
-        {/* Environment setup */}
-        <fog attach="fog" args={['#0a110a', 10, 80]} />
-        <Sky sunPosition={[0, 1, 0]} turbidity={0.1} rayleigh={0.5} inclination={0.6} distance={1000} />
+        {/* Deep space fog */}
+        <fog attach="fog" args={['#050510', 20, 100]} />
+        
+        {/* Basic lighting */}
+        <ambientLight intensity={0.2} color="#bd00ff" />
+        <directionalLight position={[10, 20, 10]} intensity={1} color="#00f2fe" />
         
         <Suspense fallback={null}>
-          <ScrollControls pages={6} damping={0.1} distance={1.2}>
+          <ScrollControls pages={7} damping={0.1} distance={1.2}>
             
-            {/* Camera Controller */}
             <CameraRig />
 
-            {/* Lights */}
-            <StadiumLights />
+            {/* Background */}
+            <Starfield />
 
-            {/* 3D Scene */}
-            <FootballField />
-            <Player position={[0, 0, 0]} />
-            <Football />
-            <GoalPost position={[0, 0, 135]} />
-            <Confetti position={[0, 5, 135]} count={300} />
+            {/* Scene 1: The First Planet */}
+            <Planet position={[25, -8, -55]} scale={7} color="#00f2fe" hasRings={true} />
 
-            {/* Billboards and 3D UI */}
-            <AboutBillboard position={[-8, 0, 20]} />
-            <ProjectCards />
+            {/* Scene 2: The Asteroid Belt */}
+            <AsteroidField position={[0, 0, -100]} count={400} radius={30} />
+
+            {/* Scene 3: The Wormhole */}
+            <Wormhole position={[0, 0, -210]} />
 
             {/* HTML Overlays tied to scroll */}
             <Scroll html style={{ width: '100%', height: '100%' }}>
               <IntroOverlay />
-              <GoalCelebration />
+              <AboutBillboard />
+              <ProjectCards />
+              <ContactPortal />
             </Scroll>
 
           </ScrollControls>
         </Suspense>
       </Canvas>
-      
-      {/* Loading Screen Overlay (Optional but good for 3D) */}
-      {/* <Loader /> */}
     </>
   );
 }

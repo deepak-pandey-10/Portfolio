@@ -1,97 +1,85 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@300;400;600;800;900&display=swap');
+@import "tailwindcss";
 
-:root {
-  --primary: #ffffff;
-  --secondary: rgba(255, 255, 255, 0.7);
-  --accent: #FFD700; /* Golden accent for a premium feel */
-  --pitch-dark: #0a110a;
-  --panel-bg: rgba(15, 25, 15, 0.6);
-  --panel-border: rgba(255, 255, 255, 0.1);
-  --blur: blur(12px);
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  --color-space-dark: #050510;
+  --color-space-primary: #ffffff;
+  --color-space-secondary: rgb(255 255 255 / 70%);
+  --color-space-accent: #00f2fe;
+  --color-panel-bg: rgb(5 5 16 / 40%);
+  --color-panel-border: rgb(0 242 254 / 30%);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html,
+  body {
+    @apply m-0 h-full w-full overflow-hidden bg-space-dark font-sans text-space-primary antialiased;
+  }
+
+  #root {
+    @apply relative h-screen w-screen;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-extrabold uppercase tracking-[0.05em];
+  }
 }
 
-body, html {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  overflow: hidden; /* Hide scrollbars, managed by R3F/drei ScrollControls or Lenis */
-  background-color: var(--pitch-dark);
-  font-family: 'Inter', sans-serif;
-  color: var(--primary);
-  -webkit-font-smoothing: antialiased;
+@layer components {
+  .html-overlay {
+    @apply pointer-events-none;
+  }
+
+  .html-overlay > * {
+    @apply pointer-events-auto;
+  }
+
+  .fullscreen-overlay {
+    @apply absolute inset-0 z-50 flex h-full w-full flex-col items-center justify-center;
+  }
+
+  .glass-panel {
+    @apply relative overflow-hidden rounded border border-panel-border bg-panel-bg shadow-[0_0_20px_rgb(0_242_254_/_10%),inset_0_0_20px_rgb(0_242_254_/_5%)] backdrop-blur-lg;
+  }
+
+  .glass-panel::before,
+  .glass-panel::after {
+    @apply absolute h-5 w-5 border-space-accent opacity-50 content-[''];
+  }
+
+  .glass-panel::before {
+    @apply left-0 top-0 border-l-2 border-t-2;
+  }
+
+  .glass-panel::after {
+    @apply bottom-0 right-0 border-b-2 border-r-2;
+  }
+
+  .glass-pill {
+    @apply rounded-[2px] border border-space-accent/20 bg-space-accent/10 px-4 py-2 text-sm font-medium uppercase tracking-[1px] text-space-accent backdrop-blur;
+  }
 }
 
-/* Fullscreen Canvas */
-#root {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
+@layer utilities {
+  .animate-pulse-glow {
+    animation: pulseGlow 2s infinite ease-in-out;
+  }
 }
 
-/* Typography Utilities */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-}
-
-/* Overlay Base Styles - used for HTML overlays on top of 3D */
-.html-overlay {
-  pointer-events: none; /* Let clicks pass through to 3D canvas by default */
-}
-
-.html-overlay > * {
-  pointer-events: auto; /* Enable interaction on specific elements */
-}
-
-/* Glassmorphism Panel Utilities */
-.glass-panel {
-  background: var(--panel-bg);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  border: 1px solid var(--panel-border);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.glass-pill {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 9999px;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--accent);
-}
-
-/* Scroll Prompt Animation */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
-}
-
-.animate-bounce {
-  animation: bounce 2s infinite ease-in-out;
-}
-
-/* Specific overlay positioning */
-.fullscreen-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; text-shadow: 0 0 10px rgba(0, 242, 254, 0); }
+  50% { opacity: 1; text-shadow: 0 0 20px rgba(0, 242, 254, 0.8); }
 }

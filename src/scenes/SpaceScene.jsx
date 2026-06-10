@@ -2,6 +2,9 @@ import { Canvas } from "@react-three/fiber";
 import { Stars  , CameraControls} from "@react-three/drei";
 import GodModel from "../components/GodModel";
 import Orbiter from "../components/Orbiter";
+import CameraBoundary from "./CameraBoundary";
+
+
 
 export default function SpaceScene(){
   return (
@@ -12,7 +15,10 @@ export default function SpaceScene(){
         height: "110vh",
       }}
     >
+
       <color attach="background" args={["black"]} />
+      <CameraBoundary />
+
 
       <ambientLight intensity={0.5} />
 
@@ -42,7 +48,13 @@ export default function SpaceScene(){
       /> */}
       <CameraControls
         minDistance={10}
-        maxDistance={500}
+
+        maxDistance={300}
+        mouseButtons={{
+          left: 2,   // TRUCK
+          right: 2,  // TRUCK
+          wheel: 16  // DOLLY
+        }}
       />
 <Orbiter offset={0} />
 <Orbiter offset={(Math.PI * 2) / 10} />
@@ -54,6 +66,7 @@ export default function SpaceScene(){
 <Orbiter offset={(Math.PI * 14) / 10} />
 <Orbiter offset={(Math.PI * 16) / 10} />
 <Orbiter offset={(Math.PI * 18) / 10} />
+
     </Canvas >
   );
 }

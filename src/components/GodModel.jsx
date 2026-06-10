@@ -27,7 +27,7 @@ export default function GodModel() {
   return (
     <primitive
       object={scene}
-      position={[-12, 0, -5]} 
+      position={[0, 0, 0]} 
       scale={3}
       rotation={[0, -Math.PI / 2, 0]}
     />

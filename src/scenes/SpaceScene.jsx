@@ -1,15 +1,19 @@
 import { Canvas } from "@react-three/fiber";
 import { Stars  , CameraControls} from "@react-three/drei";
-import GodModel from "../components/GodModel";
-import Orbiter from "../components/Orbiter";
+// import GodModel from "../components/GodModel";
+// import Orbiter from "../components/Orbiter";
 import CameraBoundary from "./CameraBoundary";
+import TempleRuins from "../components/TempleRuins";
+import CelestialEntity from "../components/CelestialEntity";
 
 
 
 export default function SpaceScene(){
   return (
     <Canvas
-      camera={{ position: [0, 0, 10] }}
+      camera={{ position: [5, 0, 10] ,
+        fov: 90
+       }}
       style={{
         width: "110vw",
         height: "110vh",
@@ -38,34 +42,21 @@ export default function SpaceScene(){
       />
 
 
-      <GodModel />
-      {/* <OrbitControls
-        enablePan={true}
-        enableRotate={true}
-        enableZoom={true}
-        minDistance={10}
-        maxDistance={200}
-      /> */}
+
+      <TempleRuins />
+
       <CameraControls
         minDistance={10}
-
-        maxDistance={300}
+        maxDistance={50}
         mouseButtons={{
-          left: 2,   // TRUCK
-          right: 2,  // TRUCK
-          wheel: 16  // DOLLY
+          left: 0,
+          right: 0,
+          middle: 0,
+          wheel: 16, 
         }}
       />
-<Orbiter offset={0} />
-<Orbiter offset={(Math.PI * 2) / 10} />
-<Orbiter offset={(Math.PI * 4) / 10} />
-<Orbiter offset={(Math.PI * 6) / 10} />
-<Orbiter offset={(Math.PI * 8) / 10} />
-<Orbiter offset={(Math.PI * 10) / 10} />
-<Orbiter offset={(Math.PI * 12) / 10} />
-<Orbiter offset={(Math.PI * 14) / 10} />
-<Orbiter offset={(Math.PI * 16) / 10} />
-<Orbiter offset={(Math.PI * 18) / 10} />
+<CelestialEntity />
+
 
     </Canvas >
   );

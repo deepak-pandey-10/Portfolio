@@ -6,9 +6,9 @@ export default function Orbiter({
   speed = 0.3,
   offset = 0,
 
-  centerX = -12,
+  centerX = 0,
   centerY = 0,
-  centerZ = -5,
+  centerZ = 0,
 }) {
   const sphereRef = useRef();
 

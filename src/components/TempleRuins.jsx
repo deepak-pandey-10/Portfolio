@@ -30,7 +30,7 @@ export default function TempleRuins() {
   return (
     <group
       ref={groupRef}
-      position={[-30, -10, -2]}
+      position={[-25, -10, -2]}
       scale={0.005}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}

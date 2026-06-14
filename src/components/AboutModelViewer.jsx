@@ -43,7 +43,7 @@ function Model() {
       <primitive
         object={clonedScene}
         scale={2.2}
-        rotation={[0.1, -Math.PI / 4, 0]}
+        rotation={[0.1, -Math.PI / 2, 0]}
       />
     </Center>
   );
@@ -51,7 +51,7 @@ function Model() {
 
 export default function AboutModelViewer() {
   return (
-    <div className="relative w-full h-full min-h-[300px] md:min-h-[400px]">
+    <div className="relative w-full h-full min-h-75 md:min-h-100">
       <Suspense
         fallback={
           <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-400">

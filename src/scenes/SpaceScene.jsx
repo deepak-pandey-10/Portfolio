@@ -1,16 +1,19 @@
 import { Canvas } from "@react-three/fiber";
 import { Stars, CameraControls } from "@react-three/drei";
 import { useRef, useState } from "react";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 import CameraBoundary from "./CameraBoundary";
 import TempleRuins from "../components/TempleRuins";
 import CelestialEntity from "../components/CelestialEntity";
 import BlackHole from "../components/BlackHole";
 import AboutPanel from "../components/AboutPanel";
+import JourneyPanel from "../components/JourneyPanel";
 
 export default function SpaceScene() {
   const cosmicSystemRef = useRef();
   const [showAbout, setShowAbout] = useState(false);
+  const [showJourney, setShowJourney] = useState(false);
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-black">
@@ -46,7 +49,7 @@ export default function SpaceScene() {
 
         <CameraBoundary />
 
-        <TempleRuins />
+        <TempleRuins onShowJourney={() => setShowJourney(true)} />
 
         <group ref={cosmicSystemRef}>
           <CelestialEntity
@@ -61,10 +64,22 @@ export default function SpaceScene() {
           minDistance={8}
           maxDistance={40}
         />
+
+        <EffectComposer>
+          <Bloom
+            intensity={0.2}
+            luminanceThreshold={0.5}
+            luminanceSmoothing={0.9}
+          />
+        </EffectComposer>
       </Canvas>
 
       {showAbout && (
         <AboutPanel onClose={() => setShowAbout(false)} />
+      )}
+
+      {showJourney && (
+        <JourneyPanel onClose={() => setShowJourney(false)} />
       )}
     </div>
   );

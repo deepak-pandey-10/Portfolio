@@ -1,8 +1,8 @@
 import { useGLTF, Center } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 
-export default function TempleRuins() {
+export default function TempleRuins({ onShowJourney }) {
   const { scene } = useGLTF(
     "/src/components/medieval_ruin_tample.glb"
   );
@@ -12,19 +12,20 @@ export default function TempleRuins() {
 
   const [hovered, setHovered] = useState(false);
 
+  // Change cursor when hovering
+  useEffect(() => {
+    document.body.style.cursor = hovered ? "pointer" : "auto";
+    return () => { document.body.style.cursor = "auto"; };
+  }, [hovered]);
+
   useFrame(() => {
     if (!groupRef.current) return;
 
-    const targetSpeed = hovered
-      ? 0.002
-      : 0.006;
-
+    const targetSpeed = hovered ? 0.001 : 0.006;
     rotationSpeed.current +=
-      (targetSpeed - rotationSpeed.current) *
-      0.05;
+      (targetSpeed - rotationSpeed.current) * 0.05;
 
-    groupRef.current.rotation.y +=
-      rotationSpeed.current;
+    groupRef.current.rotation.y += rotationSpeed.current;
   });
 
   return (
@@ -34,6 +35,10 @@ export default function TempleRuins() {
       scale={0.005}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onShowJourney?.();
+      }}
     >
       <Center>
         <primitive object={scene} />

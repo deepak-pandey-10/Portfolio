@@ -63,7 +63,7 @@ export default function JourneyModelViewer() {
         }
       >
         <Canvas
-          camera={{ position: [0, 1, 8], fov: 45 }}
+          camera={{ position: [0, 2, 8], fov: 45 }}
           style={{ width: "100%", height: "100%" }}
         >
           <ambientLight intensity={1.8} />
@@ -73,7 +73,7 @@ export default function JourneyModelViewer() {
           <pointLight position={[-10, 5, 5]} intensity={20} color="#eab308" />
           {/* Golden backlight for the wings glow */}
           <directionalLight
-            position={[0, 5, -10]}
+            position={[0, 2, -10]}
             intensity={25}
             color="#fbbf24"
           />

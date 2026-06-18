@@ -9,11 +9,13 @@ import CelestialEntity from "../components/CelestialEntity";
 import BlackHole from "../components/BlackHole";
 import AboutPanel from "../components/AboutPanel";
 import JourneyPanel from "../components/JourneyPanel";
+import ProjectsPanel from "../components/ProjectsPanel";
 
 export default function SpaceScene() {
   const cosmicSystemRef = useRef();
   const [showAbout, setShowAbout] = useState(false);
   const [showJourney, setShowJourney] = useState(false);
+  const [showProjects, setShowProjects] = useState(false);
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-black">
@@ -58,7 +60,10 @@ export default function SpaceScene() {
           />
         </group>
 
-        <BlackHole />
+        <BlackHole
+          onClick={() => setShowProjects(true)}
+        />
+
 
         <CameraControls
           minDistance={8}
@@ -80,6 +85,11 @@ export default function SpaceScene() {
 
       {showJourney && (
         <JourneyPanel onClose={() => setShowJourney(false)} />
+      )}
+      {showProjects && (
+      <ProjectsPanel
+          onClose={() => setShowProjects(false)}
+        />
       )}
     </div>
   );

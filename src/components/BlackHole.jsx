@@ -4,8 +4,14 @@ import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+
 // Custom particle system that orbits the black hole on a disk using Kepler's laws
-function OrbitalDust({ count = 250, innerRadius = 2.0, outerRadius = 9.0 }) {
+function OrbitalDust({
+  count = 250,
+  innerRadius = 2.0,
+  outerRadius = 9.0,
+  animate = true,
+}) {
   const pointsRef = useRef();
 
   const [positions, speeds, phases] = useMemo(() => {
@@ -43,6 +49,7 @@ function OrbitalDust({ count = 250, innerRadius = 2.0, outerRadius = 9.0 }) {
   }, [count, innerRadius, outerRadius]);
 
   useFrame((state) => {
+    if (!animate) return;
     if (!pointsRef.current) return;
 
     const time = state.clock.getElapsedTime();
@@ -83,7 +90,12 @@ function OrbitalDust({ count = 250, innerRadius = 2.0, outerRadius = 9.0 }) {
   );
 }
 
-export default function BlackHole() {
+export default function BlackHole({
+  onClick,
+  animate = true,
+  position = [20, -10, -10],
+  scale = 0.6,
+}) {
   const groupRef = useRef();
 
   // Custom shader for the accretion disk meshes
@@ -234,6 +246,8 @@ export default function BlackHole() {
   // No GLB traversal needed, using procedural meshes
 
   useFrame((state) => {
+    if (!animate) return;
+
     const elapsed = state.clock.getElapsedTime();
     if (groupRef.current) {
       // Slow rotation for the entire black hole group
@@ -247,8 +261,15 @@ export default function BlackHole() {
   return (
     <group
       ref={groupRef}
-      position={[20, -10, -10]} // right-bottom
-      scale={0.6} // Scale of the entire system
+      position={position}
+      scale={scale}
+      onClick={onClick}
+      onPointerOver={() => {
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "default";
+      }}
     >
       {/* Horizontal Accretion Disk */}
       <mesh material={diskMaterial} rotation={[-Math.PI / 2, 0, 0]}>
@@ -303,7 +324,12 @@ export default function BlackHole() {
       </mesh>
 
       {/* Orbiting space dust particles */}
-      <OrbitalDust count={350} innerRadius={2.4} outerRadius={11.0} />
+      <OrbitalDust
+        animate={animate}
+        count={350}
+        innerRadius={2.4}
+        outerRadius={11.0}
+      />
     </group>
   );
 }

@@ -1,17 +1,190 @@
-# React + Vite
+# 🌌 Cosmic 3D Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An immersive 3D developer portfolio built using **React**, **Vite**, **Three.js**, and **React Three Fiber**. This portfolio transforms a traditional personal website into an interactive cosmic experience where visitors explore a celestial universe featuring ancient temple ruins, a divine guardian, and a black hole project portal.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+### 🌠 Interactive 3D Universe
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Fully immersive space environment
+* Dynamic lighting and visual effects
+* Interactive celestial elements
 
-## Expanding the ESLint configuration
+### 🏛 Temple of Knowledge
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# Portfolio
+* Ancient temple centerpiece
+* Represents personal growth and learning journey
+* Interactive timeline showcasing milestones
+
+### 🌌 Black Hole Project Portal
+
+* Custom procedural black hole created with shaders
+* Interactive project showcase
+* Smooth animations and transitions
+
+### 👼 Celestial Guardian
+
+* 3D character representing the creator
+* Floating animations and visual effects
+* Integrated with the overall cosmic theme
+
+### 📖 Journey Timeline
+
+* Educational and professional milestones
+* Animated reveal effects
+* Story-driven portfolio experience
+
+### 🎨 Modern UI/UX
+
+* Glassmorphism-inspired design
+* Responsive layout
+* Smooth transitions and interactions
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+* React
+* Vite
+* JavaScript
+
+### 3D & Graphics
+
+* Three.js
+* React Three Fiber
+* Drei
+
+### Styling
+
+* Tailwind CSS
+
+### Additional Libraries
+
+* Lucide React
+* React Hooks
+
+---
+
+## 🚀 Featured Projects
+
+### RankGrow
+
+SEO + AEO Platform
+
+#### Tech Stack
+
+* React
+* Node.js
+* Express
+* Prisma
+* PostgreSQL
+
+#### Features
+
+* AI Recommendations
+* Audit History
+* Real-Time Analysis
+
+---
+
+### VelocityLife
+
+Sports Booking Platform
+
+#### Tech Stack
+
+* React
+* Node.js
+* Express
+* Prisma
+* PostgreSQL
+
+#### Features
+
+* Turf Booking
+* Google Maps Integration
+* Authentication System
+
+---
+
+## 📂 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd your-repo-name
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+src/
+├── components/
+│   ├── BlackHole.jsx
+│   ├── TempleRuins.jsx
+│   ├── GodModel.jsx
+│   ├── JourneyPanel.jsx
+│   ├── ProjectsPanel.jsx
+│   ├── JourneyModelViewer.jsx
+│   └── ProjectModelViewer.jsx
+│
+├── App.jsx
+└── main.jsx
+
+public/
+├── medieval_ruin_tample.glb
+├── celestial_fallen_angel_warrior.glb
+└── other-assets
+```
+
+---
+
+## 🌟 Inspiration
+
+This portfolio was designed to move beyond traditional portfolios by combining storytelling, immersive 3D experiences, and interactive design. Each element of the universe symbolizes a different aspect of growth, creativity, and technical expertise.
+
+> "Every milestone is a star in the making."
+
+---
+
+## 📬 Connect With Me
+
+Feel free to connect, collaborate, or discuss exciting opportunities.
+
+Built with ❤️ using React, Three.js, and creativity.

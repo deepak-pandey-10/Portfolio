@@ -1,4 +1,4 @@
-import { X, Rocket } from "lucide-react";
+import { ExternalLink, GitBranch, X, Rocket } from "lucide-react";
 import ProjectModelViewer from "./ProjectModelViewer";
 
 const projects = [
@@ -14,6 +14,8 @@ const projects = [
     color: "from-violet-400 to-fuchsia-500",
     glow: "rgba(168,85,247,0.4)",
     ring: "ring-violet-500/30",
+    codeUrl: "https://github.com/deepak-pandey-10/RankGrow.git",
+    hostedUrl: "https://rankgrow-2.onrender.com",
   },
   {
     title: "VelocityLife",
@@ -27,6 +29,8 @@ const projects = [
     color: "from-cyan-400 to-blue-500",
     glow: "rgba(34,211,238,0.4)",
     ring: "ring-cyan-500/30",
+    codeUrl: "https://github.com/deepak-pandey-10/VelocityLife.git",
+    hostedUrl: "https://velocitylife-6.onrender.com/",
   },
 ];
 
@@ -121,7 +125,7 @@ export default function ProjectsPanel({ onClose }) {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="mb-5">
                     <h4 className="text-xs uppercase tracking-widest text-zinc-500 mb-2">
                       Features
                     </h4>
@@ -136,6 +140,30 @@ export default function ProjectsPanel({ onClose }) {
                         </li>
                       ))}
                     </ul>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2.5">
+                    <a
+                      href={project.codeUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Open ${project.title} source code`}
+                      className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-semibold uppercase tracking-widest text-zinc-300 transition-all duration-300 hover:border-amber-500/30 hover:bg-amber-500/10 hover:text-amber-300"
+                    >
+                      <GitBranch size={15} />
+                      Code
+                    </a>
+
+                    <a
+                      href={project.hostedUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Open ${project.title} live site`}
+                      className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold uppercase tracking-widest text-white transition-all duration-300 ${project.ring} bg-gradient-to-r ${project.color} bg-opacity-20 hover:scale-[1.02]`}
+                    >
+                      <ExternalLink size={15} />
+                      Live
+                    </a>
                   </div>
                 </div>
               ))}
@@ -154,4 +182,3 @@ export default function ProjectsPanel({ onClose }) {
     </div>
   );
 }
-

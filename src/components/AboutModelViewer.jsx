@@ -5,7 +5,7 @@ import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 
 function Model() {
   const { scene } = useGLTF(
-    "/src/components/celestial_fallen_angel_warrior.glb"
+    "/models/celestial_fallen_angel_warrior.glb"
   );
 
   const clonedScene = useMemo(() => {

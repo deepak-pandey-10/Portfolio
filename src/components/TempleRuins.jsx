@@ -4,7 +4,7 @@ import { useFrame } from "@react-three/fiber";
 
 export default function TempleRuins({ onShowJourney }) {
   const { scene } = useGLTF(
-    "/src/components/medieval_ruin_tample.glb"
+    "/models/medieval_ruin_tample.glb"
   );
 
   const groupRef = useRef();

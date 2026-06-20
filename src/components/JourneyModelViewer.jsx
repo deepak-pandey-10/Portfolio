@@ -5,7 +5,7 @@ import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
 
 function Model() {
   const { scene } = useGLTF(
-    "/src/components/medieval_ruin_tample.glb"
+    "/models/medieval_ruin_tample.glb"
   );
 
   const clonedScene = useMemo(() => {

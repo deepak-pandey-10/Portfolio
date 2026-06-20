@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export default function GodModel(props) {
   const { scene } = useGLTF(
-    "/src/components/celestial_fallen_angel_warrior.glb"
+    "/models/celestial_fallen_angel_warrior.glb"
   );
 
   useEffect(() => {

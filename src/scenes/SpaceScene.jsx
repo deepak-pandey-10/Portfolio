@@ -1,7 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import { Stars, CameraControls } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useRef, useState   } from "react";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
+
+
 
 import CameraBoundary from "./CameraBoundary";
 import TempleRuins from "../components/TempleRuins";
@@ -50,6 +52,7 @@ export default function SpaceScene() {
         />
 
         <CameraBoundary />
+
 
         <TempleRuins onShowJourney={() => setShowJourney(true)} />
 

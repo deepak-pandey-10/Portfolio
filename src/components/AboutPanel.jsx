@@ -42,7 +42,7 @@ export default function AboutPanel({ onClose }) {
             {/* Header Badges */}
             <div className="flex flex-wrap gap-2.5 mb-8">
               <span className="inline-flex items-center rounded-lg bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-300 ring-1 ring-inset ring-amber-500/20 uppercase tracking-widest">
-                AI Engineering Student
+                CS & AI Engineering Student
               </span>
               <span className="inline-flex items-center rounded-lg bg-white/5 px-3 py-1 text-xs font-semibold text-zinc-300 ring-1 ring-inset ring-white/10 uppercase tracking-widest">
                 Full Stack Developer
@@ -53,7 +53,7 @@ export default function AboutPanel({ onClose }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
                 {
-                  title: "B.Tech AI",
+                  title: "B.Tech (CS and AI)",
                   desc: "Designing intelligent cognitive solutions",
                   icon: Brain,
                 },

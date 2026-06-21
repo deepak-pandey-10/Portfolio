@@ -154,23 +154,45 @@ npm run preview
 ## 📁 Project Structure
 
 ```text
-src/
-├── components/
-│   ├── BlackHole.jsx
-│   ├── TempleRuins.jsx
-│   ├── GodModel.jsx
-│   ├── JourneyPanel.jsx
-│   ├── ProjectsPanel.jsx
-│   ├── JourneyModelViewer.jsx
-│   └── ProjectModelViewer.jsx
+Portfolio/
+├── public/
+│   ├── models/
+│   │   ├── celestial_fallen_angel_warrior.glb
+│   │   ├── medieval_ruin_tample.glb
+│   │   └── not_a_black_hole_-_1.glb
+│   ├── favicon.svg
+│   └── icons.svg
 │
-├── App.jsx
-└── main.jsx
-
-public/
-├── medieval_ruin_tample.glb
-├── celestial_fallen_angel_warrior.glb
-└── other-assets
+├── src/
+│   ├── components/
+│   │   ├── AboutModelViewer.jsx
+│   │   ├── AboutPanel.jsx
+│   │   ├── BlackHole.jsx
+│   │   ├── CelestialEntity.jsx
+│   │   ├── GodModel.jsx
+│   │   ├── JourneyModelViewer.jsx
+│   │   ├── JourneyPanel.jsx
+│   │   ├── LoadingScreen.jsx
+│   │   ├── Orbiter.jsx
+│   │   ├── ProjectModelViewer.jsx
+│   │   ├── ProjectsPanel.jsx
+│   │   └── TempleRuins.jsx
+│   │
+│   ├── scenes/
+│   │   ├── CameraBoundary.jsx
+│   │   └── SpaceScene.jsx
+│   │
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── README.md
+└── vite.config.js
 ```
 
 ---

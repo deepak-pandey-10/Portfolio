@@ -80,6 +80,7 @@ export default function SpaceScene() {
             luminanceSmoothing={0.9}
           />
         </EffectComposer>
+        
       </Canvas>
 
       {showAbout && (
